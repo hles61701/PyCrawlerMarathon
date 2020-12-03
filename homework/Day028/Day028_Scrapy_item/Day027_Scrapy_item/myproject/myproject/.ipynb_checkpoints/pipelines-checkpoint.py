@@ -17,7 +17,7 @@ class MyprojectPipeline(object):
 
 class JSONPipeline(object):
     def open_spider(self, spider):
-        self.start_crawl_datetime = datetime.now().strftime('%Y%m%dT%H:%M:%S')
+        self.start_crawl_datetime = datetime.now().strftime('%Y%m%dT%H%M%S')
 
         # 在開始爬蟲的時候建立暫時的 JSON 檔案
         # 避免有多筆爬蟲結果的時候，途中發生錯誤導致程式停止會遺失所有檔案
@@ -50,7 +50,7 @@ class JSONPipeline(object):
         return item
 
     def close_spider(self, spider):
-        self.end_crawl_datetime = datetime.now().strftime('%Y%m%dT%H:%M:%S')
+        self.end_crawl_datetime = datetime.now().strftime('%Y%m%dT%H%M%S')
 
         # 儲存 JSON 格式
         self.runtime_file.write('\n]')

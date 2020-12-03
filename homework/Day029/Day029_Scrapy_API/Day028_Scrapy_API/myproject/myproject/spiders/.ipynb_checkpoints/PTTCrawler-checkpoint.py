@@ -3,16 +3,17 @@ import scrapy
 import re
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
-from pathlib import Path
 from pprint import pprint
+from pathlib import Path
 from ..items import PTTArticleItem
 
-# 範例目標網址: https://www.ptt.cc/bbs/Gossiping/M.1606981486.A.D44.html
 class PttcrawlerSpider(scrapy.Spider):
     name = 'PTTCrawler'
-    allowed_domains = ['www.ptt.cc']
-    start_urls = ['https://www.ptt.cc/bbs/Gossiping/M.1606981486.A.D44.html']
-    cookies = {'over18': '1'}
+    def __init__(self, start_urls, filename=None):
+        self.cookies = {'over18': '1'}
+        self.start_urls = start_urls
+        self.filename = filename
+        super(PTTcrawlerSpider, self).__init__()
 
     def start_requests(self):
         for url in self.start_urls:
@@ -31,7 +32,6 @@ class PttcrawlerSpider(scrapy.Spider):
         # 取得文章內容主體
         main_content = soup.find(id='main-content')
         
-  
         # 假如文章有屬性資料 (meta), 我們在從屬性的區塊中爬出作者 (author), 文章標題 (title), 發文日期 (date)
         metas = main_content.select('div.article-metaline')
         author = ''

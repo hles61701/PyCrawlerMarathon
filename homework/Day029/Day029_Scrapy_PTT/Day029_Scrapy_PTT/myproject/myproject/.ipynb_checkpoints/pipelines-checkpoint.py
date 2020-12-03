@@ -59,13 +59,12 @@ class JSONPipeline(object):
         # 將暫存檔改為以日期為檔名的格式
         self.store_file_path = self.dir_path / '{}-{}.json'.format(self.start_crawl_datetime,
                                                                    self.end_crawl_datetime)
+        # 以爬蟲的 board name + 日期當作存檔檔名
+        if spider.name == 'PTTCrawler' and spider.board:
+            self.store_file_path = self.dir_path / '{board}-{datetime}.json'.format(
+                    board=spider.board, datetime=datetime.now().strftime('%Y%m%dT%H%M%S'))
+
         self.store_file_path = str(self.store_file_path)
         os.rename(self.runtime_file_path, self.store_file_path)
         spider.log('Save result at {}'.format(self.store_file_path))
 
-# process_item
-# 每個 Item Pipeline 都需要實作，用來檢查資料數據與是否丟棄等決定
-# open_spider
-# 當爬蟲開啟時需要處理的流程 (e.g. 檢查資料庫是否可用)
-# close_spider
-# 當爬蟲關閉時需要處理的流程 (e.g. 關閉資料庫連線)
